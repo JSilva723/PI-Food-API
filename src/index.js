@@ -10,3 +10,5 @@ sequelize.sync({ force: false }).then(() => {
     console.log('Listening at %d', PORT); // eslint-disable-line no-console
   });
 });
+
+

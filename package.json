@@ -5,7 +5,8 @@
   "main": "./src/index.js",
   "scripts": {
     "start": "nodemon -L",
-    "lint": "eslint . --fix"
+    "lint": "eslint . --fix",
+    "test": "jest --verbose --detectOpenHandles"
   },
   "author": "Henry",
   "license": "ISC",
@@ -25,6 +26,8 @@
   },
   "devDependencies": {
     "eslint": "^8.1.0",
-    "nodemon": "^2.0.6"
+    "jest": "^27.3.1",
+    "nodemon": "^2.0.6",
+    "supertest": "^6.1.6"
   }
 }
