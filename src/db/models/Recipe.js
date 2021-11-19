@@ -9,22 +9,21 @@ const Recipe = sequelize.define('recipe', {
     allowNull: false,
     primaryKey: true
   },
-  name: {
+  title: {
     type: DataTypes.STRING,
     allowNull: false,
     unique: true,
     validate: { notEmpty: true }
   },
-  summary: { type: DataTypes.TEXT, allowNull: false },
-  img: { type: DataTypes.STRING, defaultValue: 'https://placeimg.com/100/100/any' },
+  summary: { 
+    type: DataTypes.TEXT, 
+    allowNull: false, 
+    validate: { notEmpty: true }
+  },
+  img: { type: DataTypes.STRING, defaultValue: 'https://spoonacular.com/recipeImages/716426-312x231.jpg' },
   score: { type: DataTypes.INTEGER },
   healthScore: { type: DataTypes.INTEGER },
   steps: { type: DataTypes.JSON },
-  created: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: true,
-    allowNull: false
-  }
 }, {
   timestamps: false
 });
