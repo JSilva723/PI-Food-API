@@ -18,7 +18,7 @@ APIService.prototype.getDietNames = function () {
           // If match, we go to parent for search all subtitles 
           if( $(this).text() === 'Diet Definitions'){
             $('h4', this.parent).each(function () {
-              const title = $(this).text().toLocaleLowerCase();
+              const title = $(this).text();
               diets.push(title);
             });
           }
@@ -30,26 +30,27 @@ APIService.prototype.getDietNames = function () {
 };
 
 APIService.prototype._formatMain = (obj) => ({
-  name: obj.title,
-  img: obj.image,
-  types: obj.diets,
   id: obj.id,
+  img: obj.image,
+  score: obj.spoonacularScore,
+  title: obj.title,
+  types: obj.diets,
 });
 
 APIService.prototype._format = (obj) => ({
-  id: obj.id,
-  name: obj.name,
-  summary: obj.summary,
-  score: obj.score,
   healthScore: obj.healthScore,
-  img: obj.img,
-  steps: obj.steps,
-  types: obj.types,
+  id: obj.id,
+  img: obj.imgage,
+  score: obj.spoonacularScore,
+  steps: obj.analyzedInstructions[0].steps,
+  summary: obj.summary,
+  title: obj.title,
+  types: obj.diets,
 });
 
 APIService.prototype.getAllItems = function (){
   return new Promise((resolve, reject) => {
-    axios.get(`${BASE_URL}/complexSearch/?apiKey=${API_KEY}&number=10&addRecipeInformation=true`)
+    axios.get(`${BASE_URL}/complexSearch/?apiKey=${API_KEY}&number=100&addRecipeInformation=true`)
       .then(response => {
         const items = response.data.results.map(item => this._formatMain(item));
         resolve(items);
@@ -61,10 +62,7 @@ APIService.prototype.getAllItems = function (){
 APIService.prototype.getItemById = function (id){
   return new Promise((resolve, reject) => {
     axios.get(`${BASE_URL}/${id}/information/?apiKey=${API_KEY}`)
-      .then(response => {
-        const items = response.data.results.map(item => this._format(item));
-        resolve(items);
-      })
+      .then(response => resolve(this._format(response.data)))
       .catch(err => reject(err));
   });
 };

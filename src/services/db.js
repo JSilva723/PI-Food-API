@@ -29,38 +29,35 @@ DBService.prototype.saveTypeNames = function (names) {
 
 DBService.prototype.create = (data, types) => new Promise((resolve, reject) => {
   Recipe.create(data)
-    .then(newData => {
-      Promise.all(types.map(name => Type.findByPk(name))) // Search types in DB
-        .then(types => newData.setTypes(types)) // Set new data with types
-        .then(res => resolve(res))
-        .catch(err => reject(err));
-    })
+    .then(newData => newData.setTypes(types))
+    .then(res => resolve(res))
     .catch(err => reject(err));
 });
 
 DBService.prototype._format = (obj) => ({
-  id: obj.id,
-  name: obj.name,
-  summary: obj.summary,
-  score: obj.score,
-  healthScore: obj.healthScore,
-  img: obj.img,
-  steps: obj.steps,
-  types: obj.types.map(type => type.name),
   created: obj.created,
+  healthScore: obj.healthScore,
+  id: obj.id,
+  img: obj.img,
+  score: obj.score,
+  steps: obj.steps,
+  summary: obj.summary,
+  title: obj.title,
+  types: obj.types.map(type => type.name),
 });
 
 DBService.prototype._formatMain = (obj) => ({
-  id: obj.id,
-  name: obj.name,
-  img: obj.img,
-  types: obj.types.map(type => type.name),
   created: obj.created,
+  id: obj.id,
+  img: obj.img,
+  score: obj.score,
+  title: obj.title,
+  types: obj.types.map(type => type.name),
 });
 
-DBService.prototype.getItemByName = function (name) {
+DBService.prototype.getItemByTitle = function (title) {
   return new Promise((resolve, reject) => {
-    Recipe.findOne({ include: [Type], where: { name: name } })
+    Recipe.findOne({ include: [Type], where: { title: title } })
       .then(response => resolve(this._format(response)))
       .catch(err => reject(err));
   });
