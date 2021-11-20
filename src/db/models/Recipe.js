@@ -16,7 +16,7 @@ const Recipe = sequelize.define('recipe', {
     validate: { notEmpty: true }
   },
   summary: { 
-    type: DataTypes.TEXT, 
+    type: DataTypes.STRING, 
     allowNull: false, 
     validate: { notEmpty: true }
   },

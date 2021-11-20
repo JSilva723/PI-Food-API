@@ -35,61 +35,40 @@ const insert = (data, types) => new Promise((resolve, reject) => {
 
 const getAll = (title) => new Promise((resolve, reject) => {
   db.getAllItems()
-    .then(items => {
-      if (title === 'undefined') {
-        resolve(items);
-      } else {
-        const filterByTitle = items.filter(item => item.title.toLowerCase().includes(title.toLowerCase()));
-        if (filterByTitle.length === 0) {
-          throw Error();
-        } else {
-          resolve(filterByTitle);
-        }
-      }
+    .then(itemsDB => {
+      api.getAllItems()
+        .then(itemsAPI => {
+          const items = itemsDB.concat(itemsAPI);
+          if (title === 'undefined') {
+            resolve(items);
+          } else {
+            const filterByTitle = items.filter(item => item.title.toLowerCase().includes(title.toLowerCase()));
+            if (filterByTitle.length === 0) {
+              throw Error();
+            } else {
+              resolve(filterByTitle);
+            }
+          }
+        })
+        .catch(err => {
+          console.log(err); // eslint-disable-line
+          resolve(itemsDB); // no network or it exceed limit to queries
+        });
     })
-    // .then(itemsDB => {
-    //   api.getAllItems()
-    //     .then(itemsAPI => {
-    //       const items = itemsDB.concat(itemsAPI);
-    //       if (title === 'undefined') {
-    //         resolve(items);
-    //       } else {
-    //         const filterByTitle = items.filter(item => item.title.toLowerCase().includes(title.toLowerCase()));
-    //         if (filterByTitle.length === 0) {
-    //           throw Error();
-    //         } else {
-    //           resolve(filterByTitle);
-    //         }
-    //       }
-    //     })
-    //     .catch(err => {
-    //       console.log(err); // eslint-disable-line
-    //       if (err.response) { // Not connect to network
-    //         if (err.response.status === 402) { // Limit the requets diary
-    //           resolve(itemsDB);
-    //         } else {
-    //           reject(err);
-    //         }
-    //       } else {
-    //         resolve(itemsDB);
-    //       }
-    //     });
-    // })
     .catch(err => reject(err));
 });
 
 const getItemById = (id) => new Promise((resolve, reject) => {
-  api.getItemById(id)
-    .then(response => resolve(response))
-    .catch(err => {
-      if (err.response.status !== 404) {
-        reject(err);
-      } else {
-        db.getItemById(id)
-          .then(response => resolve(response))
-          .catch(err => reject(err));
-      }
-    });
+  const number = Number(id);
+  if (isNaN(number)) {
+    db.getItemById(id)
+      .then(response => resolve(response))
+      .catch(err => reject(err));
+  } else {
+    api.getItemById(id)
+      .then(response => resolve(response))
+      .catch(err => reject(err));
+  }
 });
 
 module.exports = {
