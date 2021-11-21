@@ -8,7 +8,7 @@ const _getDiets = () => new Promise((resolve, reject) => {
   db.getTypes() // Check if there is values in DB
     .then(response => {
       if (response.length === 0) {
-        api.getDietNames() // Get types from API spoonacular
+        api.getDietNames() // Get diets from spoonacular documentation
           .then(names => {
             db.saveTypeNames(names) // Saved in DB
               .then(response => resolve(response))
@@ -23,9 +23,9 @@ const _getDiets = () => new Promise((resolve, reject) => {
 });
 
 const getTypes = () => new Promise((resolve, reject) => {
-  api.getMealTypes() // Get types from API spoonacular
+  api.getMealNames() // Get meals from spoonacular documentation
     .then(meals => {
-      const capitalizeMeals = meals.map(name => (name[0].toUpperCase() + name.slice(1, name.lenth)));
+      const capitalizeMeals = meals.map(meal => (meal[0].toUpperCase() + meal.slice(1, meal.lenth)));
       _getDiets()
         .then(diets => resolve({ diets: diets, meals: capitalizeMeals}))
         .catch(err => reject(err));

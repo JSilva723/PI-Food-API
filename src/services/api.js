@@ -29,14 +29,14 @@ APIService.prototype.getDietNames = function () {
   });
 };
 
-APIService.prototype.getMealTypes = function () {
+APIService.prototype.getMealNames = function () {
   return new Promise((resolve, reject) => {
     axios.get(MEAL_URL)
       .then(response => {
         const html = response.data;
         const $ = cheerio.load(html);
         const section = $('section', html); // Search all section tags
-        const meals = []; // Array for diets names
+        const meals = []; // Array for meals names
         // Search titles of sections
         $('h2', section).each(function () {
           // If match, we go to parent for search all subtitles 
