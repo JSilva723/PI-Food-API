@@ -35,7 +35,7 @@ DBService.prototype.create = (data, types) => new Promise((resolve, reject) => {
 });
 
 DBService.prototype._format = (obj) => ({
-  created: obj.created,
+  dishTypes: obj.dishTypes,
   healthScore: obj.healthScore,
   id: obj.id,
   img: obj.img,
@@ -47,7 +47,6 @@ DBService.prototype._format = (obj) => ({
 });
 
 DBService.prototype._formatMain = (obj) => ({
-  created: obj.created,
   id: obj.id,
   img: obj.img,
   score: obj.score,

@@ -3,15 +3,14 @@ const { APIService } = require('../services/api');
 const db = new DBService();
 const api = new APIService();
 
-const getTypes = () => new Promise((resolve, reject) => {
+const _getDiets = () => new Promise((resolve, reject) => {
   // This function load the types table when start the server, if the table is empty
   db.getTypes() // Check if there is values in DB
     .then(response => {
       if (response.length === 0) {
         api.getDietNames() // Get types from API spoonacular
           .then(names => {
-            const formatNames = names.map(name => name.toLowerCase()); // Change to lower case names
-            db.saveTypeNames(formatNames) // Saved in DB
+            db.saveTypeNames(names) // Saved in DB
               .then(response => resolve(response))
               .catch(err => reject(err));
           })
@@ -19,6 +18,17 @@ const getTypes = () => new Promise((resolve, reject) => {
       } else {
         resolve(response);
       }
+    })
+    .catch(err => reject(err));
+});
+
+const getTypes = () => new Promise((resolve, reject) => {
+  api.getMealTypes() // Get types from API spoonacular
+    .then(meals => {
+      const capitalizeMeals = meals.map(name => (name[0].toUpperCase() + name.slice(1, name.lenth)));
+      _getDiets()
+        .then(diets => resolve({ diets: diets, meals: capitalizeMeals}))
+        .catch(err => reject(err));
     })
     .catch(err => reject(err));
 });
@@ -75,5 +85,5 @@ module.exports = {
   getTypes,
   insert,
   getAll,
-  getItemById
+  getItemById,
 };

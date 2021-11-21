@@ -24,6 +24,7 @@ const Recipe = sequelize.define('recipe', {
   score: { type: DataTypes.INTEGER },
   healthScore: { type: DataTypes.INTEGER },
   steps: { type: DataTypes.JSON },
+  dishTypes: { type: DataTypes.JSON },
 }, {
   timestamps: false
 });

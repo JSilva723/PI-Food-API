@@ -1,7 +1,7 @@
 require('dotenv').config();
 const axios = require('axios');
 const cheerio = require('cheerio');
-const { DIET_URL, BASE_URL, API_KEY } = process.env; // eslint-disable-line no-undef
+const { DIET_URL, MEAL_URL, BASE_URL, API_KEY } = process.env; // eslint-disable-line no-undef
 
 function APIService() { }
 
@@ -29,6 +29,30 @@ APIService.prototype.getDietNames = function () {
   });
 };
 
+APIService.prototype.getMealTypes = function () {
+  return new Promise((resolve, reject) => {
+    axios.get(MEAL_URL)
+      .then(response => {
+        const html = response.data;
+        const $ = cheerio.load(html);
+        const section = $('section', html); // Search all section tags
+        const meals = []; // Array for diets names
+        // Search titles of sections
+        $('h2', section).each(function () {
+          // If match, we go to parent for search all subtitles 
+          if ($(this).text() === 'Meal Types') {
+            $('li', this.parent).each(function () {
+              const title = $(this).text();
+              meals.push(title);
+            });
+          }
+        });
+        resolve(meals);
+      })
+      .catch(err => reject(err));
+  });
+};
+
 APIService.prototype._formatMain = (obj) => ({
   id: obj.id,
   img: obj.image,
@@ -38,6 +62,7 @@ APIService.prototype._formatMain = (obj) => ({
 });
 
 APIService.prototype._format = (obj) => ({
+  dishTypes: obj.dishTypes,
   healthScore: obj.healthScore,
   id: obj.id,
   img: obj.image,
