@@ -27,10 +27,15 @@ const getTypes = () => new Promise((resolve, reject) => {
     .then(meals => {
       const capitalizeMeals = meals.map(meal => (meal[0].toUpperCase() + meal.slice(1, meal.lenth)));
       _getDiets()
-        .then(diets => resolve({ diets: diets, meals: capitalizeMeals}))
+        .then(diets => resolve({ diets: diets, meals: capitalizeMeals }))
         .catch(err => reject(err));
     })
-    .catch(err => reject(err));
+    .catch(err => {
+      console.log(err); // eslint-disable-line
+      _getDiets()
+        .then(diets => resolve({ diets: diets, meals: [] })) // If dont scrap
+        .catch(err => reject(err));
+    });
 });
 
 const insert = (data, types) => new Promise((resolve, reject) => {
@@ -60,11 +65,21 @@ const getAll = (title) => new Promise((resolve, reject) => {
             }
           }
         })
-        .catch(err => {
-          console.log(err); // eslint-disable-line
-          resolve(itemsDB); // no network or it exceed limit to queries
-        });
+        .catch(err => reject(err));
     })
+    // ========================================= Work of line =====================================================
+    //   if (title === 'undefined') {
+    //     resolve(itemsDB);
+    //   } else {
+    //     const filterByTitle = itemsDB.filter(item => item.title.toLowerCase().includes(title.toLowerCase()));
+    //     if (filterByTitle.length === 0) {
+    //       throw Error();
+    //     } else {
+    //       resolve(filterByTitle);
+    //     }
+    //   }
+    // })
+    // ===================================================================================================
     .catch(err => reject(err));
 });
 
