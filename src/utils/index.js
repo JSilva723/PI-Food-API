@@ -67,19 +67,6 @@ const getAll = (title) => new Promise((resolve, reject) => {
         })
         .catch(err => reject(err));
     })
-    // ========================================= Work of line =====================================================
-    //   if (title === 'undefined') {
-    //     resolve(itemsDB);
-    //   } else {
-    //     const filterByTitle = itemsDB.filter(item => item.title.toLowerCase().includes(title.toLowerCase()));
-    //     if (filterByTitle.length === 0) {
-    //       throw Error();
-    //     } else {
-    //       resolve(filterByTitle);
-    //     }
-    //   }
-    // })
-    // ===================================================================================================
     .catch(err => reject(err));
 });
 
