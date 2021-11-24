@@ -4,7 +4,8 @@
   "description": "",
   "main": "./src/index.js",
   "scripts": {
-    "start": "nodemon -L",
+    "start": "node .",
+    "dev": "nodemon -L",
     "lint": "eslint . --fix",
     "test": "jest --verbose --detectOpenHandles"
   },
