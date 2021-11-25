@@ -58,7 +58,7 @@ APIService.prototype._formatMain = (obj) => ({
   img: obj.image,
   score: obj.spoonacularScore,
   title: obj.title,
-  types: obj.diets,
+  diets: obj.diets,
 });
 
 APIService.prototype._format = (obj) => ({
@@ -70,7 +70,7 @@ APIService.prototype._format = (obj) => ({
   steps: obj.analyzedInstructions.length === 0 ? [] : obj.analyzedInstructions[0].steps,
   summary: obj.summary,
   title: obj.title,
-  types: obj.diets,
+  diets: obj.diets,
 });
 
 APIService.prototype.getAllItems = function () {

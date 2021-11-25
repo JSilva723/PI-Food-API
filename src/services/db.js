@@ -43,7 +43,7 @@ DBService.prototype._format = (obj) => ({
   steps: obj.steps,
   summary: obj.summary,
   title: obj.title,
-  types: obj.types.map(type => type.name),
+  diets: obj.types.map(type => type.name),
 });
 
 DBService.prototype._formatMain = (obj) => ({
@@ -51,7 +51,7 @@ DBService.prototype._formatMain = (obj) => ({
   img: obj.img,
   score: obj.score,
   title: obj.title,
-  types: obj.types.map(type => type.name),
+  diets: obj.types.map(type => type.name),
 });
 
 DBService.prototype.getItemByTitle = function (title) {
