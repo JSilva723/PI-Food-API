@@ -12,10 +12,45 @@ test('ruta devuelve JSON', async () => {
 
 test('Debe retornar un objeto', async () => {
   const response = await api.get('/types');
-  expect(response.body).toEqual({"data": ["gluten free", "ketogenic", "vegetarian", "lacto-vegetarian", "ovo-vegetarian", "vegan", "pescetarian", "paleo", "primal", "low fodmap", "whole30"], "status": 200});
+  expect(response.body).toEqual({
+    "status": 200,
+    "data": {
+      "diets": [
+        "Gluten Free",
+        "Ketogenic",
+        "Vegetarian",
+        "Lacto-Vegetarian",
+        "Ovo-Vegetarian",
+        "Vegan",
+        "Pescetarian",
+        "Paleo",
+        "Primal",
+        "Low FODMAP",
+        "Whole30"
+      ],
+      "meals": [
+        "Main course",
+        "Side dish",
+        "Dessert",
+        "Appetizer",
+        "Salad",
+        "Bread",
+        "Breakfast",
+        "Soup",
+        "Beverage",
+        "Sauce",
+        "Marinade",
+        "Fingerfood",
+        "Snack",
+        "Drink"
+      ]
+    }
+  });
 });
 
 
 afterAll(() => {
   sequelize.close();
 });
+
+
