@@ -54,7 +54,7 @@ const getAll = (title) => new Promise((resolve, reject) => {
       api.getAllItems()
         .then(itemsAPI => {
           const items = itemsDB.concat(itemsAPI);
-          if (title === 'undefined') {
+          if (title === 'all') {
             resolve(items);
           } else {
             const filterByTitle = items.filter(item => item.title.toLowerCase().includes(title.toLowerCase()));
